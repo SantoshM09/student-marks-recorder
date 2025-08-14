@@ -48,8 +48,13 @@
 
 <!-- Search bar -->
 <div class="mb-3">
-  <input id="search" onkeyup="searchTable()" class="form-control" placeholder="Search by name, roll number or subject...">
-</div>
+  <div class="input-group">
+    <input id="search" class="form-control" placeholder="Search by name, roll number or subject...">
+    <button class="btn btn-outline-secondary" type="button" onclick="searchTable()">Search</button>
+    <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">Clear</button>
+  </div>
+  <small class="text-muted">Tip: you can search by roll no, name, email or subject.</small>
+ </div>
 
 <!-- Students table -->
 <div class="table-responsive">
