@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Marks Recorder</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Student Marks Recorder</h1>
+    <a href="/add" class="btn">Add Student</a>
+    <input type="text" id="search" placeholder="Search by name..." onkeyup="searchTable()">
+    <table id="marksTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Subject</th>
+            <th>Marks</th>
+            <th>Actions</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{ student[0] }}</td>
+            <td>{{ student[1] }}</td>
+            <td>{{ student[2] }}</td>
+            <td>{{ student[3] }}</td>
+            <td>
+                <a href="/edit/{{ student[0] }}">Edit</a>
+                <a href="/delete/{{ student[0] }}" onclick="return confirm('Delete this record?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <script src="/static/script.js"></script>
+</body>
+</html>

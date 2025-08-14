@@ -1,0 +1,53 @@
+/* General page styling */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Navbar branding */
+.navbar-brand {
+    font-weight: bold;
+}
+
+/* Card shadows */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Table styling */
+.table th, .table td {
+    vertical-align: middle;
+}
+
+/* Search bar margin */
+#search {
+    max-width: 400px;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 4px;
+}
+.nav-link {
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+    padding: 6px 12px;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.navbar-nav .nav-link {
+    color: white;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
