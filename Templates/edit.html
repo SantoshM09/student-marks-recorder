@@ -1,18 +1,42 @@
 {% extends "base.html" %}
-{% from "_components.html" import input, button, card %}
 {% block content %}
-{% call card('Edit Student') %}
-  <form method="POST" action="{{ url_for('edit_student', id=student['id']) }}">
-    {{ input('roll_number', 'Roll Number *', value=student['roll_number'], required=True) }}
-    {{ input('name', 'Name *', value=student['name'], required=True) }}
-    {{ input('email', 'Email', type='email', value=student['email']) }}
-    {{ input('subject', 'Subject *', value=student['subject'], required=True) }}
-    {{ input('marks', 'Marks *', type='number', value=student['marks'], required=True) }}
-    {{ input('grade', 'Grade', value=student['grade']) }}
-    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-      {{ button('Update Student', 'primary', block=False) }}
-      <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title mb-4 text-center">Edit Student</h4>
+        <form method="POST" action="{{ url_for('edit_student', id=student['id']) }}">
+          <div class="mb-3">
+            <label class="form-label">Roll Number *</label>
+            <input type="text" name="roll_number" value="{{ student['roll_number'] }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Name *</label>
+            <input type="text" name="name" value="{{ student['name'] }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" value="{{ student['email'] }}" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Subject *</label>
+            <input type="text" name="subject" value="{{ student['subject'] }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Marks *</label>
+            <input type="number" name="marks" value="{{ student['marks'] }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Grade</label>
+            <input type="text" name="grade" value="{{ student['grade'] }}" class="form-control">
+          </div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <button type="submit" class="btn btn-primary">Update Student</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
-{% endcall %}
+  </div>
+</div>
 {% endblock %}
