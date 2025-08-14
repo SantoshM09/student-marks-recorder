@@ -1,21 +1,45 @@
 
 {% extends "base.html" %}
-{% from "_components.html" import input, button, card %}
 {% block content %}
-{% call card('Add New Student') %}
-  <form method="POST" action="{{ url_for('add_student') }}">
-    {{ input('roll_number', 'Roll Number *', required=True, placeholder='e.g., 21A001') }}
-    {{ input('name', 'Name *', required=True, placeholder='Student name') }}
-    {{ input('email', 'Email', type='email', placeholder='name@example.com') }}
-    {{ input('subject', 'Subject *', required=True, placeholder='e.g., Mathematics') }}
-    {{ input('marks', 'Marks *', type='number', required=True, placeholder='0-100') }}
-    {{ input('grade', 'Grade', placeholder='A/B/C...') }}
-    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-      {{ button('Add Student', 'success', block=False) }}
-      <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title mb-4 text-center">Add New Student</h4>
+        <form method="POST" action="{{ url_for('add_student') }}">
+          <div class="mb-3">
+            <label class="form-label">Roll Number *</label>
+            <input type="text" name="roll_number" class="form-control" placeholder="e.g., 21A001" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Name *</label>
+            <input type="text" name="name" class="form-control" placeholder="Student name" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" placeholder="name@example.com">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Subject *</label>
+            <input type="text" name="subject" class="form-control" placeholder="e.g., Mathematics" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Marks *</label>
+            <input type="number" name="marks" class="form-control" placeholder="0-100" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Grade</label>
+            <input type="text" name="grade" class="form-control" placeholder="A/B/C...">
+          </div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <button type="submit" class="btn btn-success">Add Student</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
-{% endcall %}
+  </div>
+</div>
 {% endblock %}
 
 
