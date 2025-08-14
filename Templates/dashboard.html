@@ -109,7 +109,6 @@
   const statsCtx = document.getElementById('statsChart').getContext('2d');
   const statsLabels = ['Total Students', 'Average Marks', 'Highest Marks', 'Lowest Marks'];
   const statsData = JSON.parse('{{ [total_students, (avg_marks or 0), (highest_marks or 0), (lowest_marks or 0)] | tojson | safe }}');
-  const statColors = ['#0d6efd', '#198754', '#ffc107', '#dc3545']; // blue, green, yellow, red
 
   new Chart(statsCtx, {
     type: 'line',
@@ -118,28 +117,19 @@
       datasets: [{
         label: 'Overview',
         data: statsData,
-        // Color each segment and point differently
-        segment: {
-          borderColor: ctx => statColors[ctx.p0DataIndex]
-        },
-        borderColor: statColors[0],
-        backgroundColor: 'transparent',
-        pointBackgroundColor: statColors,
+        borderColor: '#007bff',
+        backgroundColor: 'rgba(0,123,255,0.15)',
+        pointBackgroundColor: '#007bff',
         pointBorderColor: '#fff',
-        borderWidth: 3,
-        fill: false,
+        borderWidth: 2,
+        fill: true,
         tension: 0.3
       }]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { display: true },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => `${ctx.label}: ${ctx.parsed.y}`
-          }
-        }
+        legend: { display: true }
       },
       scales: {
         y: { beginAtZero: true }
