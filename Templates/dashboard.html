@@ -90,11 +90,18 @@
   </table>
 </div>
 
-<h4 class="mt-5">Statistics Overview</h4>
-<canvas id="statsChart" width="400" height="200"></canvas>
-
-<h4 class="mt-5">Grade Distribution</h4>
-<canvas id="gradeChart" width="400" height="200"></canvas>
+<div class="row mt-5 align-items-start">
+  <div class="col-lg-9 mb-4">
+    <h4>Statistics Overview</h4>
+    <canvas id="statsChart" style="width: 100%; height: 360px;"></canvas>
+  </div>
+  <div class="col-lg-3">
+    <h4>Grade Distribution</h4>
+    <div class="d-flex justify-content-center">
+      <canvas id="gradeChart" style="max-width: 100%; height: 300px;"></canvas>
+    </div>
+  </div>
+ </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -102,6 +109,7 @@
   const statsCtx = document.getElementById('statsChart').getContext('2d');
   const statsLabels = ['Total Students', 'Average Marks', 'Highest Marks', 'Lowest Marks'];
   const statsData = JSON.parse('{{ [total_students, (avg_marks or 0), (highest_marks or 0), (lowest_marks or 0)] | tojson | safe }}');
+  const statColors = ['#0d6efd', '#198754', '#ffc107', '#dc3545']; // blue, green, yellow, red
 
   new Chart(statsCtx, {
     type: 'line',
@@ -110,19 +118,28 @@
       datasets: [{
         label: 'Overview',
         data: statsData,
-        borderColor: '#007bff',
-        backgroundColor: 'rgba(0,123,255,0.15)',
-        pointBackgroundColor: '#007bff',
+        // Color each segment and point differently
+        segment: {
+          borderColor: ctx => statColors[ctx.p0DataIndex]
+        },
+        borderColor: statColors[0],
+        backgroundColor: 'transparent',
+        pointBackgroundColor: statColors,
         pointBorderColor: '#fff',
-        borderWidth: 2,
-        fill: true,
+        borderWidth: 3,
+        fill: false,
         tension: 0.3
       }]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { display: true }
+        legend: { display: true },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `${ctx.label}: ${ctx.parsed.y}`
+          }
+        }
       },
       scales: {
         y: { beginAtZero: true }
@@ -143,6 +160,12 @@
         data: gradeCounts,
         backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#007bff', '#6f42c1']
       }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      aspectRatio: 1,
+      plugins: { legend: { position: 'bottom' } }
     }
   });
 </script>

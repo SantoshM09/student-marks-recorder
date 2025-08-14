@@ -21,6 +21,9 @@
         <ul class="navbar-nav ms-auto">
           {% if session.get('username') %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            {% if session.get('role') == 'admin' %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('add_student') }}">Add Student</a></li>
+            {% endif %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('account') }}">Account</a></li>
             <li class="nav-item"><span class="nav-link">Hello, {{ session.username }}</span></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>

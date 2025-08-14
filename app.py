@@ -56,9 +56,9 @@ def init_db():
         if 'role' not in col_names:
             conn.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'")
             conn.commit()
-            # Ensure existing 'admin' username keeps admin privileges after migration
-            conn.execute("UPDATE users SET role='admin' WHERE username='admin'")
-            conn.commit()
+        # Ensure existing 'admin' username keeps admin privileges (idempotent)
+        conn.execute("UPDATE users SET role='admin' WHERE username='admin'")
+        conn.commit()
     except Exception:
         pass
 
