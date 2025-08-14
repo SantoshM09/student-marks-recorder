@@ -1,45 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Student</title>
-</head>
-<body>
-            {% extends "base.html" %}
-        {% block content %}
-        <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Edit Student</h4>
-            <form method="POST" action="{{ url_for('edit_student', id=student['id']) }}">
-            <div class="mb-3">
-                <label class="form-label">Roll Number *</label>
-                <input name="roll_number" value="{{ student['roll_number'] }}" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Name *</label>
-                <input name="name" value="{{ student['name'] }}" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" value="{{ student['email'] }}" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Subject *</label>
-                <input name="subject" value="{{ student['subject'] }}" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Marks *</label>
-                <input type="number" name="marks" value="{{ student['marks'] }}" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Grade</label>
-                <input name="grade" value="{{ student['grade'] }}" class="form-control">
-            </div>
-            <button class="btn btn-primary" type="submit">Update Student</button>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary ms-2">Cancel</a>
-            </form>
-        </div>
-        </div>
-        {% endblock %}
-
-</body>
-</html>
+{% extends "base.html" %}
+{% from "_components.html" import input, button, card %}
+{% block content %}
+{% call card('Edit Student') %}
+  <form method="POST" action="{{ url_for('edit_student', id=student['id']) }}">
+    {{ input('roll_number', 'Roll Number *', value=student['roll_number'], required=True) }}
+    {{ input('name', 'Name *', value=student['name'], required=True) }}
+    {{ input('email', 'Email', type='email', value=student['email']) }}
+    {{ input('subject', 'Subject *', value=student['subject'], required=True) }}
+    {{ input('marks', 'Marks *', type='number', value=student['marks'], required=True) }}
+    {{ input('grade', 'Grade', value=student['grade']) }}
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+      {{ button('Update Student', 'primary', block=False) }}
+      <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+{% endcall %}
+{% endblock %}

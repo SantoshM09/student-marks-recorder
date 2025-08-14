@@ -4,8 +4,8 @@
   <div class="col-md-4">
     <div class="card shadow-sm">
       <div class="card-body">
-        <h4 class="card-title mb-4 text-center">Admin Login</h4>
-        <form method="POST" action="{{ url_for('login') }}">
+        <h4 class="card-title mb-4 text-center">Sign In</h4>
+        <form id="loginForm" method="POST" action="{{ url_for('login') }}">
           <div class="mb-3">
             <label class="form-label">Username</label>
             <input name="username" class="form-control" placeholder="Enter username" required>
@@ -23,4 +23,27 @@
     </div>
   </div>
 </div>
+<script>
+  // Optional: enhance login via JSON API, still supports classic POST
+  const loginForm = document.getElementById('loginForm');
+  loginForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(loginForm);
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: fd.get('username'), password: fd.get('password') })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        window.location.href = "{{ url_for('dashboard') }}";
+      } else {
+        alert(data.message || 'Login failed');
+      }
+    } catch (err) {
+      alert('Network error while logging in');
+    }
+  });
+</script>
 {% endblock %}

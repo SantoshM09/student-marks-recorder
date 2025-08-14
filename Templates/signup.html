@@ -5,10 +5,14 @@
     <div class="card shadow-sm">
       <div class="card-body">
         <h4 class="card-title mb-4 text-center">Create Account</h4>
-        <form method="POST" action="{{ url_for('signup') }}">
+        <form id="signupForm" method="POST" action="{{ url_for('signup') }}">
           <div class="mb-3">
             <label class="form-label">Username</label>
             <input name="username" class="form-control" placeholder="Choose a username" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" placeholder="Your email (optional)">
           </div>
           <div class="mb-3">
             <label class="form-label">Password</label>
@@ -27,6 +31,39 @@
     </div>
   </div>
 </div>
+<script>
+  // Optional: progressively enhance the form to call JSON API as well
+  const form = document.getElementById('signupForm');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const username = fd.get('username');
+    const email = fd.get('email');
+    const password = fd.get('password');
+    const confirm = fd.get('confirm_password');
+
+    // If a confirm field exists and is filled, enforce match. Otherwise, skip check.
+    if (!password || (confirm !== null && String(confirm).length > 0 && password !== confirm)) {
+      alert('Passwords do not match');
+      return;
+    }
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        window.location.href = "{{ url_for('login') }}";
+      } else {
+        alert(data.message || 'Registration failed');
+      }
+    } catch (err) {
+      alert('Network error while registering');
+    }
+  });
+</script>
 {% endblock %}
 
 

@@ -1,0 +1,28 @@
+{% macro input(name, label, type='text', value='', placeholder='', required=False) %}
+  <div class="mb-3">
+    <label class="form-label">{{ label }}</label>
+    <input type="{{ type }}" name="{{ name }}" value="{{ value }}" class="form-control" placeholder="{{ placeholder }}" {% if required %}required{% endif %}>
+  </div>
+{% endmacro %}
+
+{% macro textarea(name, label, value='', placeholder='', rows=3, required=False) %}
+  <div class="mb-3">
+    <label class="form-label">{{ label }}</label>
+    <textarea name="{{ name }}" rows="{{ rows }}" class="form-control" placeholder="{{ placeholder }}" {% if required %}required{% endif %}>{{ value }}</textarea>
+  </div>
+{% endmacro %}
+
+{% macro button(text, color='primary', block=True, type='submit', classes='') %}
+  <button type="{{ type }}" class="btn btn-{{ color }} {% if block %}w-100{% endif %} {{ classes }}">{{ text }}</button>
+{% endmacro %}
+
+{% macro card(title='') %}
+  <div class="card shadow-sm">
+    <div class="card-body">
+      {% if title %}<h4 class="card-title mb-4 text-center">{{ title }}</h4>{% endif %}
+      {{ caller() }}
+    </div>
+  </div>
+{% endmacro %}
+
+

@@ -1,40 +1,21 @@
 
-            {% extends "base.html" %}
-        {% block content %}
-        <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Add New Student</h4>
-            <form method="POST" action="{{ url_for('add_student') }}">
-            <div class="mb-3">
-                <label class="form-label">Roll Number *</label>
-                <input name="roll_number" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Name *</label>
-                <input name="name" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input name="email" type="email" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Subject *</label>
-                <input name="subject" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Marks *</label>
-                <input name="marks" type="number" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Grade</label>
-                <input name="grade" class="form-control">
-            </div>
-            <button class="btn btn-success" type="submit">Add Student</button>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary ms-2">Cancel</a>
-            </form>
-        </div>
-        </div>
-        {% endblock %}
+{% extends "base.html" %}
+{% from "_components.html" import input, button, card %}
+{% block content %}
+{% call card('Add New Student') %}
+  <form method="POST" action="{{ url_for('add_student') }}">
+    {{ input('roll_number', 'Roll Number *', required=True, placeholder='e.g., 21A001') }}
+    {{ input('name', 'Name *', required=True, placeholder='Student name') }}
+    {{ input('email', 'Email', type='email', placeholder='name@example.com') }}
+    {{ input('subject', 'Subject *', required=True, placeholder='e.g., Mathematics') }}
+    {{ input('marks', 'Marks *', type='number', required=True, placeholder='0-100') }}
+    {{ input('grade', 'Grade', placeholder='A/B/C...') }}
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+      {{ button('Add Student', 'success', block=False) }}
+      <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+{% endcall %}
+{% endblock %}
 
-</body>
-</html>
+

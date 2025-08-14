@@ -40,7 +40,9 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2>Student Records</h2>
   <div>
+    {% if is_admin or session.get('role') == 'admin' %}
     <a href="{{ url_for('add_student') }}" class="btn btn-success">Add Student</a>
+    {% endif %}
   </div>
 </div>
 
@@ -60,7 +62,9 @@
         <th>Subject</th>
         <th>Marks</th>
         <th>Grade</th>
+        {% if is_admin or session.get('role') == 'admin' %}
         <th>Actions</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -72,28 +76,66 @@
         <td>{{ s['subject'] }}</td>
         <td>{{ s['marks'] }}</td>
         <td>{{ s['grade'] }}</td>
+        {% if is_admin or session.get('role') == 'admin' %}
         <td>
           <a href="{{ url_for('edit_student', id=s['id']) }}" class="btn btn-sm btn-primary">Edit</a>
           <form method="POST" action="{{ url_for('delete_student', id=s['id']) }}" class="d-inline" onsubmit="return confirm('Delete this record?');">
             <button class="btn btn-sm btn-danger">Delete</button>
           </form>
         </td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
 
+<h4 class="mt-5">Statistics Overview</h4>
+<canvas id="statsChart" width="400" height="200"></canvas>
+
 <h4 class="mt-5">Grade Distribution</h4>
 <canvas id="gradeChart" width="400" height="200"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const ctx = document.getElementById('gradeChart').getContext('2d');
-  const gradeLabels = {{ grade_data | map(attribute='grade') | list | tojson }};
-  const gradeCounts = {{ grade_data | map(attribute='count') | list | tojson }};
+  // Line chart for the 4 key stats
+  const statsCtx = document.getElementById('statsChart').getContext('2d');
+  const statsLabels = ['Total Students', 'Average Marks', 'Highest Marks', 'Lowest Marks'];
+  const statsData = JSON.parse('{{ [total_students, (avg_marks or 0), (highest_marks or 0), (lowest_marks or 0)] | tojson | safe }}');
 
-  new Chart(ctx, {
+  new Chart(statsCtx, {
+    type: 'line',
+    data: {
+      labels: statsLabels,
+      datasets: [{
+        label: 'Overview',
+        data: statsData,
+        borderColor: '#007bff',
+        backgroundColor: 'rgba(0,123,255,0.15)',
+        pointBackgroundColor: '#007bff',
+        pointBorderColor: '#fff',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Pie chart for grade distribution
+  const gradeCtx = document.getElementById('gradeChart').getContext('2d');
+  const gradeLabels = JSON.parse('{{ grade_data | map(attribute="grade") | list | tojson | safe }}');
+  const gradeCounts = JSON.parse('{{ grade_data | map(attribute="count") | list | tojson | safe }}');
+
+  new Chart(gradeCtx, {
     type: 'pie',
     data: {
       labels: gradeLabels,
@@ -103,9 +145,6 @@
       }]
     }
   });
-
-  console.log("Grades:", gradeLabels);
-  console.log("Counts:", gradeCounts);
 </script>
 
 {% endblock %}
