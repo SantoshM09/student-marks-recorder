@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block content %}
 
+{% block content %}
 <!-- Statistics Overview Section -->
 <div class="row text-center mb-4">
   <div class="col-md-3 mb-3">
@@ -155,7 +155,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -213,5 +215,4 @@
     }
   });
 </script>
-
 {% endblock %}
