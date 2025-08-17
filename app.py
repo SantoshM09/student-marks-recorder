@@ -86,11 +86,11 @@ def init_db():
 
     conn.commit()
 
-    # Default admin user
+    # admin user
     cur = conn.execute("SELECT COUNT(*) as cnt FROM users").fetchone()
     if cur['cnt'] == 0:
-        default_user = 'admin'
-        default_pass = 'admin123'
+        default_user = 'admin@example'
+        default_pass = '123456789'
         pw_hash = generate_password_hash(default_pass)
         conn.execute("INSERT INTO users (username, password_hash, role) VALUES (?, ?, 'admin')", (default_user, pw_hash))
         conn.commit()
