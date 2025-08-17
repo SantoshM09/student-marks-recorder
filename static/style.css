@@ -44,7 +44,7 @@ body {
     margin-right: 6px;
 }
 
-/* Dropdown styling */
+
 .dropdown-menu {
     border: none;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -65,14 +65,12 @@ body {
     width: 16px;
 }
 
-/* Card shadows */
 .card {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     border: none;
 }
 
-/* Table styling */
 .table th, .table td {
     vertical-align: middle;
 }
@@ -83,12 +81,10 @@ body {
     border-bottom: 2px solid #dee2e6;
 }
 
-/* Search bar margin */
 #search {
     max-width: 400px;
 }
 
-/* Buttons */
 .btn {
     border-radius: 6px;
     font-weight: 500;
@@ -100,12 +96,10 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* Login/Signup page specific styling */
 .min-vh-100 {
     min-height: 100vh;
 }
 
-/* Form controls */
 .form-control-lg {
     border-radius: 8px;
     border: 1px solid #dee2e6;
@@ -123,7 +117,6 @@ body {
     border: none;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .navbar-brand {
         font-size: 1.1rem;
