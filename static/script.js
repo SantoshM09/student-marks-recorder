@@ -104,3 +104,61 @@ function escapeHtml(s) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
 }
+
+// Realtime validation for Add Student form
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('addStudentForm');
+    if (!form) return;
+
+    const rollInput = document.getElementById('roll_number');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const subjectInput = document.getElementById('subject');
+    const marksInput = document.getElementById('marks');
+    const gradeInput = document.getElementById('grade');
+
+    const patterns = {
+        roll: /^[A-Za-z0-9]{3,15}$/,
+        name: /^[A-Za-z ]{2,50}$/,
+        subject: /^[A-Za-z ]{2,50}$/,
+        grade: /^[A-Za-z][A-Za-z+\-]?$/
+    };
+
+    const validateField = (input, validator) => {
+        const value = (input.value || '').trim();
+        const ok = validator(value);
+        input.classList.toggle('is-invalid', !ok);
+        input.classList.toggle('is-valid', ok && value.length > 0);
+        return ok;
+    };
+
+    const validators = {
+        roll: () => validateField(rollInput, v => patterns.roll.test(v)),
+        name: () => validateField(nameInput, v => patterns.name.test(v)),
+        email: () => validateField(emailInput, v => v.length === 0 || emailInput.checkValidity()),
+        subject: () => validateField(subjectInput, v => patterns.subject.test(v)),
+        marks: () => validateField(marksInput, v => /^\d{1,3}$/.test(v) && Number(v) >= 0 && Number(v) <= 100),
+        grade: () => validateField(gradeInput, v => v.length === 0 || patterns.grade.test(v))
+    };
+
+    [
+        [rollInput, 'roll'],
+        [nameInput, 'name'],
+        [emailInput, 'email'],
+        [subjectInput, 'subject'],
+        [marksInput, 'marks'],
+        [gradeInput, 'grade']
+    ].forEach(([el, key]) => {
+        if (!el) return;
+        el.addEventListener('input', validators[key]);
+        el.addEventListener('blur', validators[key]);
+    });
+
+    form.addEventListener('submit', (e) => {
+        const allOk = Object.values(validators).map(fn => fn()).every(Boolean);
+        if (!allOk) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    });
+});

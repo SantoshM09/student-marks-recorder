@@ -6,33 +6,39 @@
     <div class="card shadow-sm">
       <div class="card-body">
         <h4 class="card-title mb-4 text-center">Add New Student</h4>
-        <form method="POST" action="{{ url_for('add_student') }}">
+        <form method="POST" action="{{ url_for('add_student') }}" novalidate id="addStudentForm">
           <div class="mb-3">
             <label class="form-label">Roll Number *</label>
-            <input type="text" name="roll_number" class="form-control" placeholder="e.g., 21A001" required>
+            <input type="text" id="roll_number" name="roll_number" class="form-control" placeholder="e.g., 21A001" required>
+            <div class="invalid-feedback">Use 3-15 letters or numbers only.</div>
           </div>
           <div class="mb-3">
             <label class="form-label">Name *</label>
-            <input type="text" name="name" class="form-control" placeholder="Student name" required>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Student name" required>
+            <div class="invalid-feedback">Use letters and spaces only (min 2 characters).</div>
           </div>
           <div class="mb-3">
             <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" placeholder="name@example.com">
+            <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com">
+            <div class="invalid-feedback">Enter a valid email address.</div>
           </div>
           <div class="mb-3">
             <label class="form-label">Subject *</label>
-            <input type="text" name="subject" class="form-control" placeholder="e.g., Mathematics" required>
+            <input type="text" id="subject" name="subject" class="form-control" placeholder="e.g., Mathematics" required>
+            <div class="invalid-feedback">Use letters and spaces only.</div>
           </div>
           <div class="mb-3">
             <label class="form-label">Marks *</label>
-            <input type="number" name="marks" class="form-control" placeholder="0-100" required>
+            <input type="number" id="marks" name="marks" class="form-control" placeholder="0-100" min="0" max="100" required>
+            <div class="invalid-feedback">Enter a number between 0 and 100.</div>
           </div>
           <div class="mb-3">
             <label class="form-label">Grade</label>
-            <input type="text" name="grade" class="form-control" placeholder="A/B/C...">
+            <input type="text" id="grade" name="grade" class="form-control" placeholder="A/B/C...">
+            <div class="invalid-feedback">Use grade like A, B+, C, etc.</div>
           </div>
           <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-            <button type="submit" class="btn btn-success">Add Student</button>
+            <button type="submit" class="btn btn-success" id="submitAdd">Add Student</button>
             <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
           </div>
         </form>
