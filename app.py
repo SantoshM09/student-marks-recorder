@@ -155,8 +155,7 @@ def export_students_to_text() -> None:
         lines = ["ID\tRoll\tName\tEmail\tSubject\tMarks\tGrade"]
         for r in rows:
             lines.append(f"{r['id']}\t{r['roll_number']}\t{r['name']}\t{r['email'] or ''}\t{r['subject']}\t{r['marks']}\t{r['grade'] or ''}")
-        with open(STUDENTS_EXPORT, 'w', encoding='utf-8') as f:
-            f.write("\n".join(lines) + "\n")
+        _write_text_atomic(STUDENTS_EXPORT, "\n".join(lines) + "\n")
     finally:
         conn.close()
 
@@ -167,16 +166,32 @@ def export_users_to_text() -> None:
         lines = ["ID\tUsername\tEmail\tRole"]
         for r in rows:
             lines.append(f"{r['id']}\t{r['username']}\t{r['email'] or ''}\t{r['role']}")
-        with open(USERS_EXPORT, 'w', encoding='utf-8') as f:
-            f.write("\n".join(lines) + "\n")
+        _write_text_atomic(USERS_EXPORT, "\n".join(lines) + "\n")
     finally:
         conn.close()
 
 def append_login_event(user_id: int, username: str, role: str) -> None:
     from datetime import datetime
     line = f"{datetime.now().isoformat(timespec='seconds')}\tuser_id={user_id}\tusername={username}\trole={role}\n"
-    with open(LOGIN_EVENTS, 'a', encoding='utf-8') as f:
+    # Append and fsync to ensure the event is persisted immediately
+    f = open(LOGIN_EVENTS, 'a', encoding='utf-8')
+    try:
         f.write(line)
+        f.flush()
+        os.fsync(f.fileno())
+    finally:
+        f.close()
+
+def _write_text_atomic(path: str, content: str) -> None:
+    """Write text to a temp file, fsync, then atomically replace target."""
+    import tempfile
+    dir_name = os.path.dirname(path)
+    with tempfile.NamedTemporaryFile('w', delete=False, dir=dir_name, encoding='utf-8') as tmp:
+        tmp.write(content)
+        tmp.flush()
+        os.fsync(tmp.fileno())
+        tmp_path = tmp.name
+    os.replace(tmp_path, path)
 
 # Initialize exports at startup
 export_students_to_text()
