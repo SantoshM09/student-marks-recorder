@@ -17,7 +17,9 @@ function searchTable() {
                 roll: display[0] || '',
                 name: display[1] || '',
                 email: display[2] || '',
-                subject: display[3] || ''
+                subject: display[3] || '',
+                marks: display[4] || '',
+                grade: display[5] || ''
             });
         }
     });
@@ -50,8 +52,8 @@ function renderSearchResults(matches, query) {
     matches.slice(0, maxItems).forEach((m, i) => {
         const item = document.createElement('a');
         item.href = 'javascript:void(0)';
-        item.className = 'list-group-item list-group-item-action';
-        item.textContent = `${m.roll} — ${m.name} (${m.subject})`;
+        item.className = 'list-group-item list-group-item-action small opacity-75';
+        item.innerHTML = `${m.roll} — <strong>${m.name}</strong> | ${m.email} | ${m.subject} | Marks: ${m.marks} | Grade: ${m.grade}`;
         item.onclick = () => {
             highlightRow(m.row);
         };
