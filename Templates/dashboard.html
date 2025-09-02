@@ -63,7 +63,7 @@
 <div class="card mb-4">
   <div class="card-body">
     <div class="input-group">
-      <input id="search" class="form-control" placeholder="Search by name, roll number or subject..." aria-label="Search students">
+      <input id="search" class="form-control" placeholder="Search for students" aria-label="Search students" oninput="searchTable()">
       <button class="btn btn-outline-secondary" type="button" onclick="searchTable()">
         <i class="bi bi-search"></i> Search
       </button>
@@ -71,9 +71,7 @@
         <i class="bi bi-x-circle"></i> Clear
       </button>
     </div>
-    <small class="text-muted">
-      <i class="bi bi-info-circle"></i> Tip: You can search by roll number, name, email or subject.
-    </small>
+    
   </div>
 </div>
 
