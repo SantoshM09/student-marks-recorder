@@ -121,7 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
         roll: /^[A-Za-z0-9]{3,15}$/,
         name: /^[A-Za-z ]{2,50}$/,
         subject: /^[A-Za-z ]{2,50}$/,
-        grade: /^[A-Za-z][A-Za-z+\-]?$/
+        grade: /^[A-Za-z][A-Za-z+\-]?$/,
+        gmail: /^[A-Za-z0-9._%+-]+@gmail\.com$/
     };
 
     const validateField = (input, validator) => {
@@ -135,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const validators = {
         roll: () => validateField(rollInput, v => patterns.roll.test(v)),
         name: () => validateField(nameInput, v => patterns.name.test(v)),
-        email: () => validateField(emailInput, v => v.length === 0 || emailInput.checkValidity()),
+        email: () => validateField(emailInput, v => v.length === 0 || patterns.gmail.test(v)),
         subject: () => validateField(subjectInput, v => patterns.subject.test(v)),
         marks: () => validateField(marksInput, v => /^\d{1,3}$/.test(v) && Number(v) >= 0 && Number(v) <= 100),
         grade: () => validateField(gradeInput, v => v.length === 0 || patterns.grade.test(v))
