@@ -1,0 +1,21 @@
+ID	Roll	Name	Email	Subject	Marks	Grade
+4	101	Rahul Sharma	rahul.sharma@example.com	Mathematics	95	A
+5	102	Priya Verma	priya.verma@example.com	Science	88	A
+6	103	Amit Kumar	amit.kumar@example.com	English	72	B
+7	104	Sneha Patil	sneha.patil@example.com	Mathematics	67	B
+8	105	Karan Singh	karan.singh@example.com	History	54	C
+9	106	Neha Gupta	neha.gupta@example.com	Science	80	A
+10	107	Ankit Yadav	ankit.yadav@example.com	English	45	D
+11	108	Pooja Mishra	pooja.mishra@example.com	Geography	90	A
+12	109	Rohan Mehta	rohan.mehta@example.com	Science	100	A+
+13	110	Aarti Joshi	aarti.joshi@example.com	Mathematics	50	C
+14	111	Vivek Chauhan	vivek.chauhan@example.com	Physics	85	A
+15	112	Shreya Nair	shreya.nair@example.com	Chemistry	73	B
+16	113	Deepak Saini	deepak.saini@example.com	Biology	60	C
+17	114	Tanya Kapoor	tanya.kapoor@example.com	Economics	92	A
+18	115	Harshit Bansal	harshit.bansal@example.com	Political Sci	78	B
+19	116	Manisha Das	manisha.das@example.com	History	64	C
+20	117	Rajeev Rathi	rajeev.rathi@example.com	Geography	82	A
+21	118	Sonali Dutta	sonali.dutta@example.com	Physics	97	A+
+22	119	Abhishek Rawat	abhishek.rawat@example.com	Chemistry	59	C
+23	120	Kavita Menon	kavita.menon@example.com	Biology	48	D

@@ -10,6 +10,11 @@ app.secret_key = "change_this_to_random_secret"  # Change for production
 # Use an absolute path for DB to avoid CWD issues in different runners
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB = os.path.join(BASE_DIR, 'database.db')
+EXPORT_DIR = os.path.join(BASE_DIR, 'exports')
+os.makedirs(EXPORT_DIR, exist_ok=True)
+STUDENTS_EXPORT = os.path.join(EXPORT_DIR, 'students_data.txt')
+USERS_EXPORT = os.path.join(EXPORT_DIR, 'user_accounts.txt')
+LOGIN_EVENTS = os.path.join(EXPORT_DIR, 'login_events.txt')
 
 # Database connection
 def get_db_connection():
@@ -139,6 +144,43 @@ def recompute_statistics() -> None:
 
 # Compute stats once at startup
 recompute_statistics()
+
+# ------------------------
+# Text export helpers
+# ------------------------
+def export_students_to_text() -> None:
+    conn = get_db_connection()
+    try:
+        rows = conn.execute('SELECT id, roll_number, name, email, subject, marks, grade FROM students ORDER BY roll_number').fetchall()
+        lines = ["ID\tRoll\tName\tEmail\tSubject\tMarks\tGrade"]
+        for r in rows:
+            lines.append(f"{r['id']}\t{r['roll_number']}\t{r['name']}\t{r['email'] or ''}\t{r['subject']}\t{r['marks']}\t{r['grade'] or ''}")
+        with open(STUDENTS_EXPORT, 'w', encoding='utf-8') as f:
+            f.write("\n".join(lines) + "\n")
+    finally:
+        conn.close()
+
+def export_users_to_text() -> None:
+    conn = get_db_connection()
+    try:
+        rows = conn.execute('SELECT id, username, email, role FROM users ORDER BY id').fetchall()
+        lines = ["ID\tUsername\tEmail\tRole"]
+        for r in rows:
+            lines.append(f"{r['id']}\t{r['username']}\t{r['email'] or ''}\t{r['role']}")
+        with open(USERS_EXPORT, 'w', encoding='utf-8') as f:
+            f.write("\n".join(lines) + "\n")
+    finally:
+        conn.close()
+
+def append_login_event(user_id: int, username: str, role: str) -> None:
+    from datetime import datetime
+    line = f"{datetime.now().isoformat(timespec='seconds')}\tuser_id={user_id}\tusername={username}\trole={role}\n"
+    with open(LOGIN_EVENTS, 'a', encoding='utf-8') as f:
+        f.write(line)
+
+# Initialize exports at startup
+export_students_to_text()
+export_users_to_text()
 # Login required decorator
 def login_required(f):
     @wraps(f)
@@ -168,6 +210,10 @@ def login():
             session['username'] = user['username']
             session['role'] = user['role'] if 'role' in user.keys() else 'user'
             flash('Logged in successfully', 'success')
+            try:
+                append_login_event(user['id'], user['username'], (user['role'] if 'role' in user.keys() else 'user'))
+            except Exception:
+                pass
             return redirect(url_for('dashboard'))
         else:
             flash('Invalid username or password', 'danger')
@@ -204,6 +250,10 @@ def signup():
         conn.execute("INSERT INTO users (username, password_hash, email, role) VALUES (?, ?, ?, 'user')", (username, pw_hash, email or None))
         conn.commit()
         conn.close()
+        try:
+            export_users_to_text()
+        except Exception:
+            pass
         flash('Account created successfully. Please log in.', 'success')
         return redirect(url_for('login'))
 
@@ -356,6 +406,10 @@ def add_student():
         conn.close()
         # Update aggregate stats after insert
         recompute_statistics()
+        try:
+            export_students_to_text()
+        except Exception:
+            pass
         flash('Student added successfully', 'success')
         return redirect(url_for('dashboard'))
 
@@ -396,6 +450,10 @@ def edit_student(id):
         conn.close()
         # Update aggregate stats after update
         recompute_statistics()
+        try:
+            export_students_to_text()
+        except Exception:
+            pass
         flash('Student updated successfully', 'success')
         return redirect(url_for('dashboard'))
 
@@ -412,6 +470,10 @@ def delete_student(id):
     conn.close()
     # Update aggregate stats after delete
     recompute_statistics()
+    try:
+        export_students_to_text()
+    except Exception:
+        pass
     flash('Student record deleted', 'info')
     return redirect(url_for('dashboard'))
 
