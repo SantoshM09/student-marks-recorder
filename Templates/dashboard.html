@@ -50,13 +50,7 @@
   <h2 class="mb-0">
     <i class="bi bi-table"></i> Student Records
   </h2>
-  <div>
-    {% if is_admin or session.get('role') == 'admin' %}
-    <a href="{{ url_for('add_student') }}" class="btn btn-success">
-      <i class="bi bi-person-plus"></i> Add Student
-    </a>
-    {% endif %}
-  </div>
+  
 </div>
 
 <!-- Search Section -->
