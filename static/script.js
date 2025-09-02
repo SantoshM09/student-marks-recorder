@@ -41,7 +41,7 @@ function clearSearch() {
 function renderSearchResults(matches, query) {
     const container = document.getElementById('searchResults');
     if (!container) return;
-    if (!query || matches.length === 0) {
+    if (!query) {
         container.style.display = 'none';
         container.innerHTML = '';
         return;
@@ -49,6 +49,15 @@ function renderSearchResults(matches, query) {
 
     const maxItems = 10;
     container.innerHTML = '';
+    if (matches.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'list-group-item text-muted';
+        empty.textContent = 'No data found';
+        container.appendChild(empty);
+        container.style.display = '';
+        return;
+    }
+
     matches.slice(0, maxItems).forEach((m, i) => {
         const item = document.createElement('a');
         item.href = 'javascript:void(0)';
