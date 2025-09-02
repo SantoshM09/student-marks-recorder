@@ -53,7 +53,7 @@ function renderSearchResults(matches, query) {
         const item = document.createElement('a');
         item.href = 'javascript:void(0)';
         item.className = 'list-group-item list-group-item-action small opacity-75';
-        item.innerHTML = `${m.roll} — <strong>${m.name}</strong> | ${m.email} | ${m.subject} | Marks: ${m.marks} | Grade: ${m.grade}`;
+        item.innerHTML = `${highlightText(m.roll, query)} — <strong>${highlightText(m.name, query)}</strong> | ${highlightText(m.email, query)} | ${highlightText(m.subject, query)} | Marks: ${highlightText(m.marks, query)} | Grade: ${highlightText(m.grade, query)}`;
         item.onclick = () => {
             highlightRow(m.row);
         };
@@ -79,4 +79,28 @@ function highlightRow(row) {
     setTimeout(() => {
         row.style.backgroundColor = original || '';
     }, 1200);
+}
+
+function highlightText(text, query) {
+    const safe = escapeHtml(String(text || ''));
+    if (!query) return safe;
+    try {
+        const rx = new RegExp('(' + escapeRegex(query) + ')', 'ig');
+        return safe.replace(rx, '<mark>$1</mark>');
+    } catch (_) {
+        return safe;
+    }
+}
+
+function escapeRegex(s) {
+    return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function escapeHtml(s) {
+    return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
