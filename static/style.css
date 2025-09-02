@@ -82,6 +82,13 @@ body {
     max-width: 400px;
 }
 
+.list-group-item mark {
+    background-color: rgba(13, 110, 253, 0.18);
+    color: #0a58ca;
+    padding: 0 2px;
+    border-radius: 3px;
+}
+
 .btn {
     border-radius: 6px;
     font-weight: 500;

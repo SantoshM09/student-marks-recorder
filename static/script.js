@@ -75,7 +75,7 @@ function highlightRow(row) {
     row.scrollIntoView({ behavior: 'smooth', block: 'center' });
     const original = row.style.backgroundColor;
     row.style.transition = 'background-color 0.3s ease';
-    row.style.backgroundColor = '#fff3cd';
+    row.style.backgroundColor = 'rgba(13, 110, 253, 0.12)';
     setTimeout(() => {
         row.style.backgroundColor = original || '';
     }, 1200);
