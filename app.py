@@ -492,6 +492,18 @@ def delete_student(id):
     flash('Student record deleted', 'info')
     return redirect(url_for('dashboard'))
 
+# View student details
+@app.route('/student/<int:id>', methods=['GET'])
+@login_required
+def student_detail(id):
+    conn = get_db_connection()
+    student = conn.execute('SELECT * FROM students WHERE id=?', (id,)).fetchone()
+    conn.close()
+    if not student:
+        flash('Student not found', 'warning')
+        return redirect(url_for('dashboard'))
+    return render_template('student_detail.html', student=student)
+
 @app.route('/dashboard')
 @login_required
 def dashboard():

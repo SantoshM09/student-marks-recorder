@@ -99,7 +99,7 @@
           {% for student in students %}
           <tr>
             <td>{{ student['roll_number'] }}</td>
-            <td>{{ student['name'] }}</td>
+            <td><a href="{{ url_for('student_detail', id=student['id']) }}" class="text-decoration-none">{{ student['name'] }}</a></td>
             <td>{{ student['email'] }}</td>
             <td>{{ student['subject'] }}</td>
             <td>{{ student['marks'] }}</td>
