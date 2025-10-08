@@ -1,30 +1,39 @@
 function searchTable() {
     const input = (document.getElementById('search')?.value || '').toLowerCase();
+    const selectedBranch = (document.getElementById('branchFilter')?.value || '').toLowerCase();
     // Support both old id #marksTable and new #studentsTable
     const table = document.getElementById('studentsTable') || document.getElementById('marksTable');
     if (!table) return;
     const rows = table.querySelectorAll('tbody tr');
     const matches = [];
-    rows.forEach((row, idx) => {
-        const cells = Array.from(row.getElementsByTagName('td')).map(td => (td.textContent || '').toLowerCase());
-        const text = cells.join(' ');
-        const isMatch = input.length === 0 ? true : text.includes(input);
-        row.style.display = isMatch ? '' : 'none';
-        if (isMatch && input.length > 0) {
-            const display = Array.from(row.getElementsByTagName('td')).map(td => (td.textContent || '').trim());
+    rows.forEach((row) => {
+        const cellsLower = Array.from(row.getElementsByTagName('td')).map(td => (td.textContent || '').toLowerCase());
+        const cellsDisplay = Array.from(row.getElementsByTagName('td')).map(td => (td.textContent || '').trim());
+        const rowText = cellsLower.join(' ');
+        const subjectLower = (cellsLower[3] || '');
+        const branchOk = selectedBranch.length === 0 || subjectLower === selectedBranch;
+        const searchOk = input.length === 0 || rowText.includes(input);
+        const show = branchOk && searchOk;
+        row.style.display = show ? '' : 'none';
+        if (show && input.length > 0) {
             matches.push({
                 row: row,
-                roll: display[0] || '',
-                name: display[1] || '',
-                email: display[2] || '',
-                subject: display[3] || '',
-                marks: display[4] || '',
-                grade: display[5] || ''
+                roll: cellsDisplay[0] || '',
+                name: cellsDisplay[1] || '',
+                email: cellsDisplay[2] || '',
+                subject: cellsDisplay[3] || '',
+                marks: cellsDisplay[4] || '',
+                grade: cellsDisplay[5] || ''
             });
         }
     });
 
     renderSearchResults(matches, input);
+}
+
+function applyBranchFilter() {
+    // Re-run the combined filter when branch changes
+    searchTable();
 }
 
 function clearSearch() {
