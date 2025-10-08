@@ -500,6 +500,9 @@ def dashboard():
 
     conn = get_db_connection()
     students = conn.execute('SELECT * FROM students ORDER BY roll_number').fetchall()
+    # Distinct subjects (used as branches/classes for filtering in UI)
+    subject_rows = conn.execute('SELECT DISTINCT subject FROM students ORDER BY subject').fetchall()
+    subjects = [row['subject'] for row in subject_rows if (row['subject'] or '').strip()]
 
     # Determine admin privileges robustly from DB (not just session)
     current_user = None
@@ -527,7 +530,8 @@ def dashboard():
         highest_marks=highest_marks,
         lowest_marks=lowest_marks,
         grade_data=grade_data,
-        is_admin=is_admin
+        is_admin=is_admin,
+        subjects=subjects
     )
 
 # Stats API (JSON)

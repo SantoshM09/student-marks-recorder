@@ -50,7 +50,15 @@
   <h2 class="mb-0">
     <i class="bi bi-table"></i> Student Records
   </h2>
-  
+  <div class="d-flex align-items-center gap-2">
+    <label for="branchFilter" class="me-2 mb-0">Branch</label>
+    <select id="branchFilter" class="form-select" style="min-width: 220px;" onchange="applyBranchFilter()">
+      <option value="">All</option>
+      {% for subj in subjects %}
+      <option value="{{ subj }}">{{ subj }}</option>
+      {% endfor %}
+    </select>
+  </div>
 </div>
 
 <!-- Search Section -->
